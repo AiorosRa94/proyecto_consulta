@@ -31,21 +31,21 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  google_fonts: ^2.1.0
+  google_fonts: ^4.0.3
   shared_preferences: ^2.0.6
-  font_awesome_flutter: ^9.1.0
+  font_awesome_flutter: ^10.4.0
   flip_box_bar_plus: ^1.0.0
   provider: ^6.0.1
   sqflite: ^2.0.1
   flutter_textfield_autocomplete: ^1.0.2
-  permission_handler: ^8.3.0
+  permission_handler: ^10.2.0
   url_launcher: ^6.0.17
   intl: ^0.17.0
-  flutter_platform_alert: ^0.2.1
+  flutter_platform_alert: ^0.3.0
   flutter_easyloading: ^3.0.3
   path_provider: ^2.0.9
   open_file: ^3.2.1
-  flutter_launcher_icons: ^0.9.2
+  flutter_launcher_icons: ^0.11.0
   calender_picker: ^1.0.7
   phoenix_native: ^0.0.2
 
@@ -66,7 +66,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

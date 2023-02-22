@@ -17,6 +17,7 @@ import 'package:proyecto_consulta/providers/providerPermisos/providerStorage.dar
 import 'package:proyecto_consulta/providers/providerUsuario/providerUsuario.dart';
 import 'package:proyecto_consulta/recursos/responsivo/pantalla.dart';
 import 'package:proyecto_consulta/widget/textos/textoAutoajustable.dart';
+
 class Dashboard extends StatelessWidget {
   Dashboard({Key? key}) : super(key: key);
 
@@ -28,9 +29,7 @@ class Dashboard extends StatelessWidget {
     } else if (await Permission.storage.request().isDenied) {
       stg.permisoStorage = false;
     }
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -41,18 +40,13 @@ class Dashboard extends StatelessWidget {
 
     return OrientationBuilder(builder: (context, orientation) {
       print("Orientacion : ${orientation.toString()}");
-      if(orientation == Orientation.landscape){
-
-
-        WidgetsBinding.instance.addPostFrameCallback((_){
-
+      if (orientation == Orientation.landscape) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
-                builder: (context) => DashboardTablet()),
+            MaterialPageRoute(builder: (context) => DashboardTablet()),
           );
         });
-
       }
       return WillPopScope(
         onWillPop: () {
@@ -68,60 +62,46 @@ class Dashboard extends StatelessWidget {
               break;
           }
           providerMenuDashboard.menu = 0;
-          Provider.of<ApiProductos>(context, listen: false)
-              .getProductos(context,providerUsuario.token);
-          Provider.of<ApiClientes>(context, listen: false).getClientes(context,providerUsuario.token);
+          Provider.of<ApiProductos>(context, listen: false).getProductos(context, providerUsuario.token);
+          Provider.of<ApiClientes>(context, listen: false).getClientes(context, providerUsuario.token);
           //we need to return a future
           return Future.value(false);
         },
         child: Scaffold(
           body: DecoratedBox(
             decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/background_dashboard.png"),
-                  fit: BoxFit.fill),
+              image: DecorationImage(image: AssetImage("assets/background_dashboard.png"), fit: BoxFit.fill),
             ),
             child: Center(
               child: Column(
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsets.only(top: 30, left: 30, right: 30),
+                    padding: const EdgeInsets.only(top: 30, left: 30, right: 30),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         providerMenuDashboard.menu == 0
                             ? IconButton(
                                 onPressed: () {},
-                                icon: Icon(FontAwesomeIcons.ellipsisH,
-                                    color: Colors.white,
-                                    size: Pantalla(context).altoDisp(0.3)),
+                                icon: Icon(FontAwesomeIcons.ellipsis, color: Colors.white, size: Pantalla(context).altoDisp(0.3)),
                               )
                             : IconButton(
                                 onPressed: () {
-                                  Provider.of<ApiProductos>(context,
-                                          listen: false)
-                                      .getProductos(context,providerUsuario.token);
-                                  Provider.of<ApiClientes>(context,
-                                          listen: false)
-                                      .getClientes(context,providerUsuario.token);
+                                  Provider.of<ApiProductos>(context, listen: false).getProductos(context, providerUsuario.token);
+                                  Provider.of<ApiClientes>(context, listen: false).getClientes(context, providerUsuario.token);
                                   switch (providerMenuDashboard.menu) {
                                     case 5:
                                       providerMenuDashboard.menu = 4;
                                       break;
 
                                     default:
-                                      print(
-                                          "esta en el menu: ${providerMenuDashboard.menu}");
+                                      print("esta en el menu: ${providerMenuDashboard.menu}");
                                       providerMenuDashboard.menu = 0;
                                       break;
                                   }
                                 },
-                                icon: Icon(FontAwesomeIcons.arrowLeft,
-                                    color: Colors.white,
-                                    size: Pantalla(context).altoDisp(0.3)),
+                                icon: Icon(FontAwesomeIcons.arrowLeft, color: Colors.white, size: Pantalla(context).altoDisp(0.3)),
                               ),
-
                         PopupMenuButton(
                           itemBuilder: (context) => [
                             PopupMenuItem(
@@ -133,12 +113,9 @@ class Dashboard extends StatelessWidget {
                                 PhoenixNative.restartApp();
                               },
                             )
-                         ],
-                          icon: Icon(FontAwesomeIcons.solidUserCircle,
-                              color: Colors.white,
-                              size: Pantalla(context).altoDisp(0.3)),
+                          ],
+                          icon: Icon(FontAwesomeIcons.solidCircleUser, color: Colors.white, size: Pantalla(context).altoDisp(0.3)),
                         ),
-
                       ],
                     ),
                   ),
@@ -151,8 +128,7 @@ class Dashboard extends StatelessWidget {
                           ),
                           providerMenu.pantalla,
                           Padding(
-                            padding: EdgeInsets.only(
-                                top: Pantalla(context).altoDisp(0.3)),
+                            padding: EdgeInsets.only(top: Pantalla(context).altoDisp(0.3)),
                             child: SizedBox(
                               height: Pantalla(context).altoDisp(0.6),
                               width: Pantalla(context).anchoDisp(5),
@@ -174,10 +150,8 @@ class Dashboard extends StatelessWidget {
                                 ),
                                 style: ElevatedButton.styleFrom(
                                   elevation: 1,
-                                  primary: Colors.purple.shade300,
-                                  side: BorderSide(
-                                      width: 1.0,
-                                      color: Colors.purple.shade300),
+                                  backgroundColor: Colors.purple.shade300,
+                                  side: BorderSide(width: 1.0, color: Colors.purple.shade300),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30),
                                   ),
@@ -231,27 +205,20 @@ class Dashboard extends StatelessWidget {
     String formatoFecha = DateFormat('yyyy-MM-dd').format(now);
 
     Directory root = await getApplicationDocumentsDirectory();
-    String directoryPath = root.path+'/historial';
+    String directoryPath = root.path + '/historial';
     await Directory(directoryPath).create(recursive: true);
     String filePath = '$directoryPath/historial$formatoFecha.pdf';
 
     print(filePath);
 
     HttpClient client = new HttpClient();
-    client.getUrl(Uri.parse("http://187.188.96.87/APIS/apiLoyVerseConsultora/index.php/reporte?fecha=${formatoFecha}"))
-        .then((HttpClientRequest request) {
+    client.getUrl(Uri.parse("http://187.188.96.87/APIS/apiLoyVerseConsultora/index.php/reporte?fecha=${formatoFecha}")).then((HttpClientRequest request) {
       request.headers.add("Authorization", "Digest $token");
       return request.close();
-    })
-        .then((HttpClientResponse response) {
-
+    }).then((HttpClientResponse response) {
       response.pipe(new File(filePath).openWrite());
       OpenFile.open(filePath);
       EasyLoading.dismiss();
-
     });
-
-
-
   }
 }
