@@ -28,9 +28,7 @@ class DashboardTablet extends StatelessWidget {
     } else if (await Permission.storage.request().isDenied) {
       stg.permisoStorage = false;
     }
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -41,16 +39,13 @@ class DashboardTablet extends StatelessWidget {
 
     return OrientationBuilder(builder: (context, orientation) {
       print("Orientacion : ${orientation.toString()}");
-      if(orientation == Orientation.portrait){
-        WidgetsBinding.instance.addPostFrameCallback((_){
-
+      if (orientation == Orientation.portrait) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
-                builder: (context) => Dashboard()),
+            MaterialPageRoute(builder: (context) => Dashboard()),
           );
         });
-
       }
       return WillPopScope(
         onWillPop: () {
@@ -66,62 +61,47 @@ class DashboardTablet extends StatelessWidget {
               break;
           }
           providerMenuDashboardTablet.menu = 0;
-          Provider.of<ApiProductos>(context, listen: false)
-              .getProductos(context,providerUsuario.token);
-          Provider.of<ApiClientes>(context, listen: false).getClientes(context,providerUsuario.token);
+          Provider.of<ApiProductos>(context, listen: false).getProductos(context, providerUsuario.token);
+          Provider.of<ApiClientes>(context, listen: false).getClientes(context, providerUsuario.token);
           //we need to return a future
           return Future.value(false);
         },
         child: Scaffold(
           body: DecoratedBox(
             decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/background_dashboard.png"),
-                  fit: BoxFit.fill),
+              image: DecorationImage(image: AssetImage("assets/background_dashboard.png"), fit: BoxFit.fill),
             ),
             child: Center(
               child: Column(
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsets.only(top: 30, left: 30, right: 30),
+                    padding: const EdgeInsets.only(top: 30, left: 30, right: 30),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         providerMenuDashboardTablet.menu == 0
                             ? IconButton(
                                 onPressed: () {},
-                                icon: Icon(FontAwesomeIcons.ellipsisH,
-                                    color: Colors.white,
-                                    size: Pantalla(context).altoDisp(0.3)),
+                                icon: Icon(FontAwesomeIcons.ellipsisH, color: Colors.white, size: Pantalla(context).altoDisp(0.3)),
                               )
                             : IconButton(
                                 onPressed: () {
-                                  Provider.of<ApiProductos>(context,
-                                          listen: false)
-                                      .getProductos(context,providerUsuario.token);
-                                  Provider.of<ApiClientes>(context,
-                                          listen: false)
-                                      .getClientes(context,providerUsuario.token);
+                                  Provider.of<ApiProductos>(context, listen: false).getProductos(context, providerUsuario.token);
+                                  Provider.of<ApiClientes>(context, listen: false).getClientes(context, providerUsuario.token);
                                   switch (providerMenuDashboardTablet.menu) {
                                     case 5:
                                       providerMenuDashboardTablet.menu = 4;
                                       break;
 
                                     default:
-                                      print(
-                                          "esta en el menu: ${providerMenuDashboardTablet.menu}");
+                                      print("esta en el menu: ${providerMenuDashboardTablet.menu}");
                                       providerMenuDashboardTablet.menu = 0;
                                       break;
                                   }
                                 },
-                                icon: Icon(FontAwesomeIcons.arrowLeft,
-                                    color: Colors.white,
-                                    size: Pantalla(context).altoDisp(0.3)),
+                                icon: Icon(FontAwesomeIcons.arrowLeft, color: Colors.white, size: Pantalla(context).altoDisp(0.3)),
                               ),
-                        Icon(FontAwesomeIcons.solidUserCircle,
-                            color: Colors.white,
-                            size: Pantalla(context).altoDisp(0.3)),
+                        Icon(FontAwesomeIcons.solidUserCircle, color: Colors.white, size: Pantalla(context).altoDisp(0.3)),
                       ],
                     ),
                   ),
@@ -134,8 +114,7 @@ class DashboardTablet extends StatelessWidget {
                           ),
                           providerMenuTablet.pantalla,
                           Padding(
-                            padding: EdgeInsets.only(
-                                top: Pantalla(context).altoDisp(0.3)),
+                            padding: EdgeInsets.only(top: Pantalla(context).altoDisp(0.3)),
                             child: SizedBox(
                               height: Pantalla(context).altoDisp(0.6),
                               width: Pantalla(context).anchoDisp(4),
@@ -158,9 +137,7 @@ class DashboardTablet extends StatelessWidget {
                                 style: ElevatedButton.styleFrom(
                                   elevation: 1,
                                   primary: Colors.purple.shade300,
-                                  side: BorderSide(
-                                      width: 1.0,
-                                      color: Colors.purple.shade300),
+                                  side: BorderSide(width: 1.0, color: Colors.purple.shade300),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30),
                                   ),
@@ -214,27 +191,20 @@ class DashboardTablet extends StatelessWidget {
     String formatoFecha = DateFormat('yyyy-MM-dd').format(now);
 
     Directory root = await getApplicationDocumentsDirectory();
-    String directoryPath = root.path+'/historial';
+    String directoryPath = root.path + '/historial';
     await Directory(directoryPath).create(recursive: true);
     String filePath = '$directoryPath/historial$formatoFecha.pdf';
 
     print(filePath);
 
     HttpClient client = new HttpClient();
-    client.getUrl(Uri.parse("http://187.188.96.87/APIS/apiLoyVerseConsultora/index.php/reporte?fecha=${formatoFecha}"))
-        .then((HttpClientRequest request) {
+    client.getUrl(Uri.parse("http://187.188.113.30/APIS/apiLoyVerseConsultora/index.php/reporte?fecha=${formatoFecha}")).then((HttpClientRequest request) {
       request.headers.add("Authorization", "Digest $token");
       return request.close();
-    })
-        .then((HttpClientResponse response) {
-
+    }).then((HttpClientResponse response) {
       response.pipe(new File(filePath).openWrite());
       OpenFile.open(filePath);
       EasyLoading.dismiss();
-
     });
-
-
-
   }
 }

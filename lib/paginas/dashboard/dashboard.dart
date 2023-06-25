@@ -212,7 +212,7 @@ class Dashboard extends StatelessWidget {
     print(filePath);
 
     HttpClient client = new HttpClient();
-    client.getUrl(Uri.parse("http://187.188.96.87/APIS/apiLoyVerseConsultora/index.php/reporte?fecha=${formatoFecha}")).then((HttpClientRequest request) {
+    client.getUrl(Uri.parse("http://187.188.113.30/APIS/apiLoyVerseConsultora/index.php/reporte?fecha=${formatoFecha}")).then((HttpClientRequest request) {
       request.headers.add("Authorization", "Digest $token");
       return request.close();
     }).then((HttpClientResponse response) {

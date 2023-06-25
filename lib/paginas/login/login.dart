@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_platform_alert/flutter_platform_alert.dart';
@@ -15,8 +17,8 @@ import 'package:proyecto_consulta/widget/textos/textoContainer.dart';
 class Login extends StatelessWidget {
   Login({Key? key}) : super(key: key);
   final _llaveFormulario = GlobalKey<FormState>();
-  TextEditingController controladorUsuario = new TextEditingController();
-  TextEditingController controladorcontrasena = new TextEditingController();
+  final TextEditingController controladorUsuario = new TextEditingController();
+  final TextEditingController controladorcontrasena = new TextEditingController();
 
   ApiLogin login = ApiLogin();
 
@@ -28,8 +30,7 @@ class Login extends StatelessWidget {
     return Scaffold(
         body: DecoratedBox(
       decoration: BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage("assets/background.png"), fit: BoxFit.fill),
+        image: DecorationImage(image: AssetImage("assets/background.png"), fit: BoxFit.fill),
       ),
       child: Center(
         child: SingleChildScrollView(
@@ -57,8 +58,7 @@ class Login extends StatelessWidget {
                     child: Column(
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(
-                              top: Pantalla(context).altoDisp(0.3)),
+                          padding: EdgeInsets.only(top: Pantalla(context).altoDisp(0.3)),
                           child: TextoContainer(
                             texto: "Bienvenido",
                             colorTexto: Colors.white,
@@ -96,8 +96,7 @@ class Login extends StatelessWidget {
 
                 // BOTON INGRESAR
                 Padding(
-                  padding:
-                      EdgeInsets.only(top: Pantalla(context).altoDisp(0.6)),
+                  padding: EdgeInsets.only(top: Pantalla(context).altoDisp(0.6)),
                   child: SizedBox(
                     height: Pantalla(context).altoDisp(0.5),
                     width: Pantalla(context).anchoDisp(8),
@@ -110,9 +109,7 @@ class Login extends StatelessWidget {
 */
                         EasyLoading.show(status: 'Entrando...');
 
-                        var log = await login.loginRequest(
-                            controladorUsuario.text,
-                            controladorcontrasena.text);
+                        var log = await login.loginRequest(controladorUsuario.text, controladorcontrasena.text);
 
                         if (log != null) {
                           providerUsr.usuario = UsuarioJson(
@@ -126,8 +123,7 @@ class Login extends StatelessWidget {
                           EasyLoading.dismiss();
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => Dashboard()),
+                            MaterialPageRoute(builder: (context) => Dashboard()),
                           );
                         } else {
                           EasyLoading.dismiss();
